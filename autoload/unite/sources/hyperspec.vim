@@ -50,7 +50,8 @@ function! s:get_hyperspec_symb_list()
 endfunction
 
 function! s:openhyperspecPage(x)
-        return printf("call vimproc#open(\"%s\")", a:x)
+        " return printf("call vimproc#open(\"%s\")", a:x)
+        return printf("call Browse_CLHS(\"%s\")", a:x)
 endfunction
 
 function! s:unite_source.gather_candidates(args, context)
@@ -68,6 +69,18 @@ function! unite#sources#hyperspec#define()
   return s:unite_source
 endfunction
 
+function! Browse_CLHS(x)
+  let dst = a:x
+  silent execute ":pedit! " . dst
+  wincmd P
+  wincmd R
+  setlocal buftype=nofile
+  setlocal noswapfile
+  setlocal syntax=none
+  setlocal bufhidden=delete
+  silent execute ":%! w3m " . a:x
+  " wincmd p
+endfunction
 
 "unlet s:unite_source
 
